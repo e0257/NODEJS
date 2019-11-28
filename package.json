@@ -1,0 +1,19 @@
+{
+  "name": "epam_nodejs",
+  "version": "1.0.0",
+  "description": "only for learning nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e0257/NODEJS.git"
+  },
+  "author": "Yaroslav Bushmakin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/e0257/NODEJS/issues"
+  },
+  "homepage": "https://github.com/e0257/NODEJS#readme"
+}
