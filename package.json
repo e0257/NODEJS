@@ -4,7 +4,9 @@
   "description": "only for learning nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "task1": "nodemon task1",
+    "task2": "nodemon task2"
   },
   "repository": {
     "type": "git",
