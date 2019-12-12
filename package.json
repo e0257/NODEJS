@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/e0257/NODEJS#readme",
   "devDependencies": {
+    "eslint": "^6.7.2",
     "nodemon": "^2.0.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
