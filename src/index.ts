@@ -1,6 +1,8 @@
-import { User } from './models/user';
+import express from 'express';
+import controller from './controller';
 
-let users: Partial<User>[] = [{
-    id: 'sdf'
-}];
-console.log(users);
+const app = express();
+
+app.use('/', controller.router)
+app.listen(4400, () => console.log('Server is started'));
+
