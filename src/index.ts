@@ -3,6 +3,8 @@ import controller from './controller';
 
 const app = express();
 
-app.use('/', controller.router)
-app.listen(4400, () => console.log('Server is started'));
+app.use(express.urlencoded({ extended: true}));
+app.use(express.json());
+app.use('/', controller.router);
+app.listen(4000, () => console.log('Server is started'));
 
