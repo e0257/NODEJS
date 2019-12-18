@@ -1,7 +1,9 @@
 import express from 'express';
+import { createValidator } from 'express-joi-validation';
 import { Request, Response } from 'express'
 import { v4 as uuid } from 'uuid';
-import { User } from './models/user';
+import { User } from './models';
+import { userSchema } from './validation-schemas';
 
 const users: User[] = [
     {
@@ -27,26 +29,27 @@ const users: User[] = [
     }];
 
 class Controller {
-    public router = express.Router();
+    router = express.Router();
+    validator = createValidator({ passError: true });
 
     constructor() {
-        this.initRoutes()
+        this.initRoutes();
     }
 
-    public initRoutes() {
+    initRoutes() {
         this.router.get('/user/:id', this.getUser);
-        this.router.post('/user', this.createUser);
-        this.router.put('/user', this.updateUser);
+        this.router.post('/user', this.validator.body(userSchema), this.createUser);
+        this.router.put('/user', this.validator.body(userSchema), this.updateUser);
         this.router.delete('/user/:id', this.deleteUser);
         this.router.get('/filter/user', this.getAutoSuggestUsers);
     }
 
-    getUser(req: Request, res: Response) {
+    private getUser(req: Request, res: Response) {
         const user = users.find(u => u.id === req.params.id);
         res.json(user);
     }
 
-    getAutoSuggestUsers(req: Request, res: Response) {
+    private getAutoSuggestUsers(req: Request, res: Response) {
         const limit = parseInt(req.query.limit, 10);
         const substr = req.query.substr;
         const result = users
@@ -56,17 +59,17 @@ class Controller {
         res.json(result);
     }
 
-    createUser(req: Request, res: Response) {
+    private createUser(req: Request, res: Response) {
         const id = uuid();
         users.push({
             ...req.body,
             id,
             isDeleted: false
         });
-        res.send(`User added with id: ${id}`)
+        res.send(`User added with id: ${id}`);
     }
 
-    updateUser(req: Request, res: Response) {
+    private updateUser(req: Request, res: Response) {
         const index = users.findIndex(user => user.id === req.body.id);
         if (index >= 0) {
             users[index] = {...users[index], ...req.body };
@@ -76,7 +79,7 @@ class Controller {
         }
     }
 
-    deleteUser(req: Request, res: Response) {
+    private deleteUser(req: Request, res: Response) {
         const index = users.findIndex(u => u.id === req.params.id);
         if (index >= 0) {
             users[index].isDeleted = true;
