@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { config } from './db-config'
 
-export const sequelize = new Sequelize(
+export const sequelizeDB = new Sequelize(
     config.database,
     config.username,
     config.password,

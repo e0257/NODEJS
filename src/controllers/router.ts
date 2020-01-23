@@ -10,7 +10,7 @@ router.get('/user/:id', userController.getUser);
 router.post('/user', validator.body(userSchema), userController.createUser);
 router.put('/user', validator.body(userSchema), userController.updateUser);
 router.delete('/user/:id', userController.deleteUser);
-router.get('/user/filter/:limit/:substr', userController.getAutoSuggestUsers);
+router.get('/filter/user', userController.getAutoSuggestUsers);
 
 export default router;
 

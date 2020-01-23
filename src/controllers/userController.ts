@@ -1,71 +1,70 @@
 import { Request, Response } from 'express'
-import { User } from "../DTO";
 import { v4 as uuid } from 'uuid';
-
-const users: User[] = [
-    {
-        id: uuid(),
-        login: 'user',
-        password: 'user',
-        age: 22,
-        isDeleted: false,
-    },
-    {
-        id: uuid(),
-        login: 'tester',
-        password: 'tester',
-        age: 26,
-        isDeleted: false,
-    },
-    {
-        id: uuid(),
-        login: 'boss',
-        password: 'boss',
-        age: 29,
-        isDeleted: false,
-    }];
+import { UserModel } from '../models';
+import { Op } from 'sequelize';
 
 class UserController {
-    getUser(req: Request, res: Response) {
-        const user = users.find(u => u.id === req.params.id);
+    async getUser(req: Request, res: Response) {
+        const user = await UserModel.findOne({
+            where: { id: req.params.id}
+        });
         res.json(user);
     }
 
-    getAutoSuggestUsers(req: Request, res: Response) {
+    async getAutoSuggestUsers(req: Request, res: Response) {
         const limit = parseInt(req.query.limit, 10);
-        const substr = req.query.substr;
-        const result = users
-            .filter( user => user.login.includes(substr))
-            .sort( (a, b) => a.login.toLowerCase() > b.login.toLowerCase() ? 1 : -1)
-            .slice(0, limit);
+        const substr = req.query.substr || '';
+        const result = await UserModel.findAll({
+            where: {
+                login: { [Op.like]: `%${substr}%` }
+            },
+            order: ['login'],
+            limit: limit
+        });
         res.json(result);
     }
 
-    createUser(req: Request, res: Response) {
-        console.log(req.body);
+    async createUser(req: Request, res: Response) {
         const id = uuid();
-        users.push({
-            ...req.body,
-            id,
-            isDeleted: false
+        const { login } = req.body;
+        const user = await UserModel.findOne({
+            where: { login: login}
         });
-        res.send(`User added with id: ${id}`);
-    }
-
-    updateUser(req: Request, res: Response) {
-        const index = users.findIndex(user => user.id === req.body.id);
-        if (index >= 0) {
-            users[index] = {...users[index], ...req.body };
-            res.send('User updated');
+        if(!user) {
+            await UserModel.create({
+                ...req.body,
+                id,
+                isDeleted: false});
+            res.send(`User added with id: ${id}`);
         } else {
-            res.send('User is not found');
+            res.send(`User with login: "${login}" already exists`);
         }
     }
 
-    deleteUser(req: Request, res: Response) {
-        const index = users.findIndex(u => u.id === req.params.id);
-        if (index >= 0) {
-            users[index].isDeleted = true;
+    async updateUser(req: Request, res: Response) {
+        const {id} = req.body;
+        const user = await UserModel.findOne({
+            where: {id: id}
+        });
+        if (user) {
+            await UserModel.update(
+                {...req.body},
+                {where: {id: id}});
+            res.send('User updated');
+        } else {
+            res.send(`User is not found`);
+        }
+    }
+
+    async deleteUser(req: Request, res: Response) {
+        const {id} = req.params;
+        const user = await UserModel.findOne({
+            where: {id: id}
+        });
+        if (user) {
+            await UserModel.update(
+                {isDeleted: false},
+                {where: {id: id}});
             res.send('User deleted');
         } else {
             res.send('User is not found');
