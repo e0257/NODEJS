@@ -34,6 +34,7 @@ UserModel.init({
 
 (async () => {
     await sequelizeDB.sync();
+    // The first table population
     // await UserModel.create({
     //     id: uuid(),
     //     login: 'user',

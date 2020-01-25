@@ -1,11 +1,12 @@
 import express from 'express';
-import router from './controllers/router';
-import { errorValidateHandler } from './errorHandler';
+import router from './routes/router';
+import { errorValidateHandler } from './error-handlers/errorHandler';
 
+const port = 4400;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 app.use(errorValidateHandler);
-app.listen(4000, () => console.log('Server is started'));
+app.listen(port, () => console.log(`Server is started on port: ${port}`));
