@@ -1,8 +1,8 @@
 import express from 'express';
-import router from './routes/router';
+import { router } from './routes';
 import { errorValidateHandler } from './error-handlers/errorHandler';
 
-const port = 4400;
+const port = 4200;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));

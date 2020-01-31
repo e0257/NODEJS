@@ -20,7 +20,7 @@ UserModel.init({
         allowNull: false,
     },
     password: {
-        type:DataTypes.STRING(32),
+        type: DataTypes.STRING(32),
         allowNull: true
     },
     age: DataTypes.INTEGER,
