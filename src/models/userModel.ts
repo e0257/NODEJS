@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelizeDB } from '../data-access';
-import { v4 as uuid } from 'uuid';
 
 export class UserModel extends Model {
     public id!: string;
@@ -30,30 +29,3 @@ UserModel.init({
     sequelize: sequelizeDB
 });
 
-
-
-(async () => {
-    await sequelizeDB.sync();
-    // The first table population
-    // await UserModel.create({
-    //     id: uuid(),
-    //     login: 'user',
-    //     password: 'user',
-    //     age: 22,
-    //     isDeleted: false,
-    // });
-    // await UserModel.create({
-    //     id: uuid(),
-    //     login: 'tester',
-    //     password: 'tester',
-    //     age: 26,
-    //     isDeleted: false,
-    // });
-    // await UserModel.create({
-    //     id: uuid(),
-    //     login: 'boss',
-    //     password: 'boss',
-    //     age: 29,
-    //     isDeleted: false,
-    // });
-})();

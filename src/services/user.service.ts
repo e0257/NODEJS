@@ -1,13 +1,11 @@
-import { UserModel } from "../models";
-import { Op } from "sequelize";
-import { User } from "../DTO";
+import { UserModel } from '../models';
+import { Op } from 'sequelize';
+import { User } from '../DTO';
 
 class UserService {
 
     getUserById(id: string) {
-        return UserModel.findOne({
-            where: {id: id}
-        });
+        return UserModel.findOne({ where: { id } });
     }
 
     getAutoSuggestUsers(limit: number, substr: string) {
@@ -17,7 +15,7 @@ class UserService {
                 isDeleted: false
             },
             order: ['login'],
-            limit: limit
+            limit
         });
     }
 
@@ -28,12 +26,11 @@ class UserService {
     deleteUser(id: string) {
         return UserModel.update(
             { isDeleted: true },
-            { where: { id: id } });
+            { where: { id } });
     }
 
-    updateUser(user: User){
-        return UserModel.update(user,
-            { where: { id: user.id } });
+    updateUser(user: User) {
+        return UserModel.update(user, { where: { id: user.id } });
     }
 
     hasUser(user: Partial<User>) {

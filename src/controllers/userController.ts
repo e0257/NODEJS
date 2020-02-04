@@ -18,13 +18,13 @@ class UserController {
     async createUser(req: Request, res: Response) {
         const id = uuid();
         const userExists = await userService.hasUser(req.body);
-        if(!userExists) {
+        if (!userExists) {
             await userService.createUser({
                 ...req.body,
                 id,
                 isDeleted: false
             });
-            res.send(`User added with id: ${id}`);
+            res.send(`User was added with id: ${id}`);
         } else {
             res.send(`User with login: "${req.body.login}" already exists`);
         }
@@ -34,7 +34,7 @@ class UserController {
         const user = await userService.hasUser(req.body);
         if (user) {
             await userService.updateUser(req.body);
-            res.send('User updated');
+            res.send('User was updated');
         } else {
             res.send(`User is not found`);
         }
@@ -45,7 +45,7 @@ class UserController {
         const user = await userService.hasUser({ id });
         if (user) {
             await userService.deleteUser(id);
-            res.send('User deleted');
+            res.send('User was deleted');
         } else {
             res.send('User is not found');
         }

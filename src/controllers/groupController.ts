@@ -1,26 +1,49 @@
 import { Request, Response } from 'express'
 import { v4 as uuid } from 'uuid';
+import { groupService } from '../services';
 
 class GroupController {
 
-    getAllGroups(req: Request, res: Response) {
-        return null;
+    async getAllGroups(req: Request, res: Response) {
+        const groups = await groupService.getAllGroups();
+        res.json(groups);
     }
 
-    getGroup(req: Request, res: Response) {
-        return null;
+    async getGroupById(req: Request, res: Response) {
+        const group = await groupService.getGroupById(req.params.id);
+        res.json(group);
     }
 
-    createGroup(req: Request, res: Response) {
-        return null;
+    async createGroup(req: Request, res: Response) {
+        const id = uuid();
+        const groupExists = await groupService.hasGroup(req.body);
+        if (!groupExists) {
+            await groupService.createGroup({ ...req.body, id });
+            res.send(`Group was added with id: ${id}`);
+        } else {
+            res.send(`Group with name: "${req.body.name}" already exists`);
+        }
     }
 
-    updateGroup(req: Request, res: Response) {
-        return null;
+    async updateGroup(req: Request, res: Response) {
+        const group = await groupService.hasGroup(req.body);
+        if (group) {
+            await groupService.updateGroup(req.body);
+            res.send('Group was updated');
+        } else {
+            res.send(`Group is not found`);
+        }
     }
 
-    deleteGroup(req: Request, res: Response) {
-        return null;
+    async deleteGroup(req: Request, res: Response) {
+        const { id } = req.params;
+        const group = await groupService.hasGroup({ id });
+        if (group) {
+            await groupService.deleteGroup(id);
+            res.send('Group was deleted');
+        } else {
+            res.send('Group is not found');
+        }
     }
 }
 
