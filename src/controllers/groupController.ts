@@ -45,6 +45,12 @@ class GroupController {
             res.send('Group is not found');
         }
     }
+
+    async addUsersToGroup(req: Request, res: Response) {
+        const { groupId, userIds } = req.body;
+        await groupService.addUsersToGroup(groupId, userIds);
+        res.send('Users added');
+    }
 }
 
 export default new GroupController();

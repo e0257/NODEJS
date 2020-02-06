@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
-import { GroupModel } from '../models';
+import { sequelizeDB } from '../data-access';
+import { GroupModel, UserGroupModel } from '../models';
 import { Group } from '../DTO';
 
 class GroupService {
@@ -21,6 +22,14 @@ class GroupService {
 
     deleteGroup(id: string) {
         return GroupModel.destroy({ where: { id } });
+    }
+
+    addUsersToGroup(groupId: string, userIds: string[]) {
+        return sequelizeDB.transaction( async (t) => {
+                userIds.forEach( async (userId) => {
+                        await UserGroupModel.create({ groupId, userId }, { transaction: t })
+                });
+        })
     }
 
     hasGroup(group: Partial<Group>) {
