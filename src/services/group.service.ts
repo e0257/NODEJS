@@ -26,9 +26,12 @@ class GroupService {
 
     addUsersToGroup(groupId: string, userIds: string[]) {
         return sequelizeDB.transaction( async (t) => {
-                userIds.forEach( async (userId) => {
-                        await UserGroupModel.create({ groupId, userId }, { transaction: t })
-                });
+                // userIds.forEach( async (userId) => {
+                //         await UserGroupModel.create({ groupId, userId }, { transaction: t })
+                // });
+                return Promise.all(userIds.map(userId =>
+                    UserGroupModel.create({ groupId, userId }, { transaction: t })
+                ))
         })
     }
 

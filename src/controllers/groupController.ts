@@ -47,9 +47,13 @@ class GroupController {
     }
 
     async addUsersToGroup(req: Request, res: Response) {
-        const { groupId, userIds } = req.body;
-        await groupService.addUsersToGroup(groupId, userIds);
-        res.send('Users added');
+        const {groupId, userIds} = req.body;
+        try {
+            await groupService.addUsersToGroup(groupId, userIds);
+            res.send('Users added');
+        } catch (e) {
+            res.send(e);
+        }
     }
 }
 
