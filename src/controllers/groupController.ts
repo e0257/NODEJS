@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { v4 as uuid } from 'uuid';
 import { groupService } from '../services';
-import { controllerLogger, logger } from "../config";
+import { controllerLogger, logger } from '../config';
 
 class GroupController {
 

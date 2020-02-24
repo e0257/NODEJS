@@ -24,15 +24,25 @@ class GroupService {
         return GroupModel.destroy({ where: { id } });
     }
 
-    addUsersToGroup(groupId: string, userIds: string[]) {
-        return sequelizeDB.transaction( async (t) => {
-                // userIds.forEach( async (userId) => {
-                //         await UserGroupModel.create({ groupId, userId }, { transaction: t })
-                // });
-                return Promise.all(userIds.map(userId =>
-                    UserGroupModel.create({ groupId, userId }, { transaction: t })
-                ))
-        })
+    async addUsersToGroup(groupId: string, userIds: string[]) {
+        const t = await sequelizeDB.transaction();
+        try {
+            await Promise.all(userIds.map(userId =>
+                UserGroupModel.create({ groupId, userId }, { transaction: t })
+            ));
+            await t.commit();
+        } catch (e) {
+            throw e;
+            await t.rollback()
+        }
+        // return sequelizeDB.transaction( async (t) => {
+        //         // userIds.forEach( async (userId) => {
+        //         //         await UserGroupModel.create({ groupId, userId }, { transaction: t })
+        //         // });
+        //         return Promise.all(userIds.map(userId =>
+        //             UserGroupModel.create({ groupId, userId }, { transaction: t })
+        //         ))
+        // })
     }
 
     hasGroup(group: Partial<Group>) {
