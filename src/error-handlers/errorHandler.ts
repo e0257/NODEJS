@@ -22,6 +22,12 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
     }
 };
 
+export const errorAuthHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    err && err.name === 'UnauthorizedError'
+        ? res.status(401).json({ message: 'Invalid Token' })
+        : next(err);
+};
+
 process.on('unhandledRejection', (err) => {
     logger.error('Unhandled Rejection:', err)
 });
