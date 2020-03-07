@@ -24,7 +24,7 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
 
 export const errorAuthHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     err && err.name === 'UnauthorizedError'
-        ? res.status(401).json({ message: 'Invalid Token' })
+        ? res.status(401).json({ message: err.message })
         : next(err);
 };
 

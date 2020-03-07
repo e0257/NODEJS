@@ -8,7 +8,7 @@ class AuthController {
         try {
             const { userName, password } = req.body;
             if (userName || password) {
-                const token = jwt.sign({ sub: userName }, config.secret, { expiresIn: 3000});
+                const token = 'Bearer ' + jwt.sign({ sub: userName }, config.secret, { expiresIn: 3000});
                 res.json({ token });
             } else {
                 res.status(403).json('Bad userName/password combination.');
