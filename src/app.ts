@@ -1,8 +1,9 @@
 import cors from 'cors';
 import express from 'express';
+import { jwt } from './middlewares';
 import { router } from './routes';
 import { errorAuthHandler, errorHandler, errorValidateHandler } from './error-handlers/errorHandler';
-import { expressLogger, jwt, expressErrorLogger } from './config'
+import { expressLogger, expressErrorLogger } from './config'
 
 const port = 4200;
 const app = express();
