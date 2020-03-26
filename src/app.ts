@@ -5,8 +5,8 @@ import { router } from './routes';
 import { errorAuthHandler, errorHandler, errorValidateHandler } from './error-handlers/errorHandler';
 import { expressLogger, expressErrorLogger } from './config'
 
-const port = 4200;
-const app = express();
+const port = 4000;
+export const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

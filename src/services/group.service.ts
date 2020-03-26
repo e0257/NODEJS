@@ -32,17 +32,9 @@ class GroupService {
             ));
             await t.commit();
         } catch (e) {
+            await t.rollback();
             throw e;
-            await t.rollback()
         }
-        // return sequelizeDB.transaction( async (t) => {
-        //         // userIds.forEach( async (userId) => {
-        //         //         await UserGroupModel.create({ groupId, userId }, { transaction: t })
-        //         // });
-        //         return Promise.all(userIds.map(userId =>
-        //             UserGroupModel.create({ groupId, userId }, { transaction: t })
-        //         ))
-        // })
     }
 
     hasGroup(group: Partial<Group>) {
